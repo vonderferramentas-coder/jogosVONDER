@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Jogos VONDER</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="settings.css?v=3">
+<script src="totem-scale.js"></script>
 </head>
-<body>
+<body data-settings-page="home">
 <div class="app-frame">
 
   <section id="screen-select" class="screen active">
@@ -15,7 +17,7 @@
       <h1 class="select-title">ESCOLHA SEU JOGO!</h1>
       <p class="select-subtitle">Desafie sua mente e concorra<br>a brindes VONDER!</p>
 
-      <a class="game-card" href="jogo-da-memoria/">
+      <a class="game-card" data-game="memoryEnabled" href="jogo-da-memoria/">
         <span class="game-icon">🧠</span>
         <span class="game-text">
           <span class="game-name">Jogo da Memória</span>
@@ -24,7 +26,7 @@
         <span class="game-arrow">›</span>
       </a>
 
-      <a class="game-card" href="caca-palavras/">
+      <a class="game-card" data-game="wordSearchEnabled" href="caca-palavras/">
         <span class="game-icon">🔍</span>
         <span class="game-text">
           <span class="game-name">Caça-Palavras</span>
@@ -33,7 +35,7 @@
         <span class="game-arrow">›</span>
       </a>
 
-      <a class="game-card" href="quiz/">
+      <a class="game-card" data-game="quizEnabled" href="quiz/">
         <span class="game-icon">❓</span>
         <span class="game-text">
           <span class="game-name">Quiz VONDER</span>
@@ -47,5 +49,6 @@
   </section>
 
 </div>
+<script src="settings.js?v=3"></script>
 </body>
 </html>

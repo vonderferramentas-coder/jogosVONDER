@@ -1,0 +1,217 @@
+/* Painel administrativo em proporção fixa 9:16, dentro da tela do totem. */
+.mascot-settings-trigger {
+  position: absolute;
+  z-index: 4;
+  left: 17%;
+  top: 13%;
+  width: 66%;
+  height: 50%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mascot-settings-trigger:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -4px;
+  border-radius: 50%;
+}
+
+.settings-modal {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  overflow: hidden;
+  background: #050505;
+}
+
+.settings-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .28;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0 22px,
+    #fdbd12 22px 27px,
+    transparent 27px 64px
+  );
+}
+
+.settings-modal::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 7px;
+  background: #fdbd12;
+  box-shadow: 0 757px 0 #fdbd12;
+}
+
+.settings-modal.open { display: flex; }
+
+.settings-dialog {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-height: 92%;
+  overflow-y: auto;
+  padding: 25px 29px 23px;
+  border: 2px solid #fdbd12;
+  border-radius: 20px;
+  color: #fff;
+  background: #11110f;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, .58);
+  font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
+.settings-title {
+  margin: 0;
+  color: #fdbd12;
+  text-align: center;
+  font-family: Impact, 'Arial Narrow', sans-serif;
+  font-size: 25px;
+  letter-spacing: .4px;
+  font-weight: 400;
+}
+
+.settings-subtitle {
+  margin: 3px 0 20px;
+  color: #fff;
+  text-align: center;
+  font-size: 13px;
+}
+
+.settings-games {
+  display: grid;
+  gap: 12px;
+}
+
+.settings-game {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 9px 12px 9px 15px;
+  border: 2px solid #fdbd12;
+  border-radius: 12px;
+  background: #191917;
+}
+
+.settings-game-copy { flex: 1; min-width: 0; }
+.settings-game strong { display: block; color: #fff; font-size: 15px; }
+.settings-game small { display: block; margin-top: 2px; color: #d6d6d6; font-family: Arial, sans-serif; font-size: 9px; }
+.settings-divider { height: 1px; margin: 19px 0; background: #4a4a45; }
+.settings-control { margin: 17px 0; }
+
+.settings-control label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.settings-value {
+  min-width: 62px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #111;
+  background: #fdbd12;
+  text-align: center;
+  font-size: 12px;
+}
+
+.settings-control input[type='range'] {
+  width: 100%;
+  height: 9px;
+  margin: 10px 0 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 20px;
+  background: linear-gradient(to right, #fdbd12 0 var(--slider-progress, 25%), #555550 var(--slider-progress, 25%) 100%);
+  outline: 0;
+}
+
+.settings-control input[type='range']::-webkit-slider-thumb {
+  width: 25px;
+  height: 25px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #fdbd12;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .55);
+  cursor: pointer;
+}
+
+.settings-control input[type='range']::-moz-range-thumb {
+  width: 19px;
+  height: 19px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #fdbd12;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .55);
+  cursor: pointer;
+}
+
+.settings-help {
+  margin: 7px 0 0;
+  color: #d0d0cb;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 23px;
+}
+
+.settings-actions button {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 12px;
+  font-family: Impact, 'Arial Narrow', sans-serif;
+  font-size: 14px;
+  letter-spacing: .2px;
+  cursor: pointer;
+}
+
+.settings-cancel { border: 2px solid #fdbd12; color: #fdbd12; background: transparent; }
+.settings-save { border: 0; color: #111; background: #fdbd12; }
+
+.settings-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 29px;
+  border: 0;
+  border-radius: 99px;
+  padding: 0;
+  background: #555550;
+  cursor: pointer;
+}
+
+.settings-switch::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .16s;
+}
+
+.settings-switch.is-on { background: #fdbd12; }
+.settings-switch.is-on::after { transform: translateX(23px); }

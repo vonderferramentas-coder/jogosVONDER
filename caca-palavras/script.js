@@ -6,7 +6,7 @@
   ];
   const GRID_SIZE = 10;
   const WORDS_PER_GAME = 5;
-  const GAME_SECONDS = 60;
+  const DEFAULT_GAME_SECONDS = 60;
   // Regras fáceis: só da esquerda p/ direita, de cima p/ baixo,
   // ou na diagonal descendente (\) — sem palavras ao contrário nem diagonal invertida (/).
   const DIRECTIONS = [
@@ -24,7 +24,7 @@
   const timerText = document.getElementById('timer-text');
   const timerPill = document.querySelector('.timer-pill');
 
-  let secondsLeft = GAME_SECONDS;
+  let secondsLeft = DEFAULT_GAME_SECONDS;
   let timerId = null;
   let grid = [];
   let placements = new Map(); // normalized word -> path
@@ -270,7 +270,7 @@
   }
 
   function startTimer() {
-    secondsLeft = GAME_SECONDS;
+    secondsLeft = window.VonderSettings?.get().wordSearchSeconds || DEFAULT_GAME_SECONDS;
     updateTimerText();
     timerPill.classList.remove('warning');
     clearInterval(timerId);

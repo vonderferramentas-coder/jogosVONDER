@@ -55,7 +55,7 @@
     { question: 'Qual ferramenta é mais indicada para verificar rapidamente alinhamentos horizontais e verticais em instalações?', options: ['Nível', 'Alicate universal', 'Martelo', 'Chave de boca'], correct: 0 },
   ];
 
-  const QUESTIONS_PER_GAME = 3;
+  const DEFAULT_QUESTIONS_PER_GAME = 3;
   const ANSWER_DELAY = 1100;
 
   const screens = {
@@ -86,7 +86,7 @@
 
   function pickRoundQuestions() {
     return shuffle(QUESTION_POOL)
-      .slice(0, QUESTIONS_PER_GAME)
+      .slice(0, window.VonderSettings?.get().quizQuestions || DEFAULT_QUESTIONS_PER_GAME)
       .map(q => {
         const shuffledOptions = shuffle(q.options.map((opt, i) => ({ opt, isCorrect: i === q.correct })));
         return {

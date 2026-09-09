@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Jogo da Memória VONDER</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../settings.css?v=3">
+<script src="../totem-scale.js"></script>
 </head>
-<body>
+<body data-settings-page="memory">
 <div class="app-frame">
 
   <!-- TELA 1: ABERTURA -->
@@ -18,7 +20,7 @@
       <p class="intro-subtitle">Desafie sua memória<br>e mostre que você é fera!</p>
       <div class="intro-rules">
         <p><span class="rule-icon">🏆</span> Encontre todos os pares para vencer.</p>
-        <p><span class="rule-icon">⏱️</span> Você terá apenas 30 segundos para memorizar</p>
+        <p id="memory-time-rule"><span class="rule-icon">⏱️</span> Você terá 30 segundos para encontrar os pares.</p>
       </div>
       <button id="btn-start" class="btn-yellow">Vamos jogar!</button>
     </div>
@@ -49,6 +51,7 @@
   </section>
 
 </div>
-<script src="script.js"></script>
+<script src="../settings.js?v=3"></script>
+<script src="script.js?v=3"></script>
 </body>
 </html>

@@ -13,6 +13,7 @@ html, body {
   height: 100%;
   background: #000;
   font-family: 'Segoe UI', Arial, sans-serif;
+  overflow: hidden;
 }
 
 body {

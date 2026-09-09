@@ -3,7 +3,7 @@
     'disco_corte', 'trena', 'lavadora', 'spray',
     'mascote', 'mochila', 'parafusadeira', 'logo_vonder'
   ];
-  const GAME_SECONDS = 30;
+  const DEFAULT_GAME_SECONDS = 30;
 
   const screens = {
     intro: document.getElementById('screen-intro'),
@@ -18,8 +18,9 @@
   let flippedCards = [];
   let matchedCount = 0;
   let lockBoard = false;
-  let secondsLeft = GAME_SECONDS;
+  let secondsLeft = DEFAULT_GAME_SECONDS;
   let timerId = null;
+  let preparationId = null;
 
   function showScreen(name) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -92,7 +93,7 @@
   }
 
   function startTimer() {
-    secondsLeft = GAME_SECONDS;
+    secondsLeft = window.VonderSettings?.get().memorySeconds || DEFAULT_GAME_SECONDS;
     updateTimerText();
     timerPill.classList.remove('warning');
     clearInterval(timerId);
@@ -115,17 +116,30 @@
 
   function endGame(won) {
     clearInterval(timerId);
+    clearTimeout(preparationId);
     lockBoard = true;
     showScreen(won ? 'win' : 'lose');
   }
 
   function startGame() {
+    clearTimeout(preparationId);
     matchedCount = 0;
     flippedCards = [];
     lockBoard = false;
     buildBoard();
     showScreen('game');
-    startTimer();
+    const preparationSeconds = window.VonderSettings?.get().memoryPreparationSeconds || 0;
+    if (preparationSeconds > 0) {
+      lockBoard = true;
+      board.querySelectorAll('.card').forEach(card => card.classList.add('flipped'));
+      preparationId = setTimeout(() => {
+        board.querySelectorAll('.card').forEach(card => card.classList.remove('flipped'));
+        lockBoard = false;
+        startTimer();
+      }, preparationSeconds * 1000);
+    } else {
+      startTimer();
+    }
   }
 
   document.getElementById('btn-start').addEventListener('click', startGame);

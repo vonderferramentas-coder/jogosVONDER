@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Quiz VONDER</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../settings.css?v=3">
+<script src="../totem-scale.js"></script>
 </head>
-<body>
+<body data-settings-page="quiz">
 <div class="app-frame">
 
   <!-- TELA 1: ABERTURA -->
@@ -17,7 +19,7 @@
       <h1 class="intro-title">BEM-VINDO!</h1>
       <p class="intro-subtitle">Teste seus conhecimentos sobre<br>ferramentas e a VONDER!</p>
       <div class="intro-rules">
-        <p><span class="rule-icon">❓</span> Responda 3 perguntas sobre ferramentas.</p>
+        <p id="quiz-count-rule"><span class="rule-icon">❓</span> Responda 3 perguntas sobre ferramentas.</p>
         <p><span class="rule-icon">🏆</span> Acerte todas para garantir o brinde!</p>
       </div>
       <button id="btn-start" class="btn-yellow">Vamos jogar!</button>
@@ -65,6 +67,7 @@
   </section>
 
 </div>
-<script src="script.js"></script>
+<script src="../settings.js?v=3"></script>
+<script src="script.js?v=3"></script>
 </body>
 </html>
