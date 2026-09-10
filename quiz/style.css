@@ -110,7 +110,7 @@ body {
 .rule-icon { font-size: 1.2em; }
 
 .btn-yellow {
-  margin-top: auto;
+  margin: 3% 0 4%;
   background: var(--yellow);
   color: #111;
   font-weight: 800;

@@ -1,0 +1,18 @@
+{
+  "name": "Jogos VONDER",
+  "short_name": "VONDER",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#fdbE0f",
+  "icons": [
+    {
+      "src": "assets/cards/logo_vonder.png",
+      "sizes": "79x104",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
