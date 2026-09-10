@@ -139,18 +139,18 @@ body {
 #btn-finish-win  { left: 22.6%;  top: 87.04%; width: 55%;    height: 6.05%; }
 #btn-finish-lose { left: 21.79%; top: 87.7%;  width: 55.05%; height: 6%; }
 
-.lose-overlay {
+.result-overlay {
   position: absolute;
   left: 4%;
   right: 6%;
   top: 4%;
   background: #0b0b09;
   border-radius: 16px;
-  padding: 9% 6% 12%;
+  padding: 7% 6% 8%;
   text-align: left;
 }
 
-.lose-overlay h2 {
+.result-overlay h2 {
   color: #fff;
   font-weight: 900;
   font-size: clamp(22px, 7.2vw, 30px);
@@ -158,11 +158,17 @@ body {
   margin: 0 0 3%;
 }
 
-.lose-overlay p {
+.result-overlay p {
   color: var(--yellow);
   font-weight: 700;
   font-size: clamp(14px, 3.8vw, 17px);
+  line-height: 1.25;
   margin: 0;
+}
+
+/* A arte de vitória contém textos próprios; este painel os cobre por completo. */
+#screen-win .result-overlay {
+  min-height: 40%;
 }
 
 .back-link {

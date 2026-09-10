@@ -21,6 +21,7 @@
   let secondsLeft = DEFAULT_GAME_SECONDS;
   let timerId = null;
   let preparationId = null;
+  let preparationTimerId = null;
 
   function showScreen(name) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -117,12 +118,15 @@
   function endGame(won) {
     clearInterval(timerId);
     clearTimeout(preparationId);
+    clearInterval(preparationTimerId);
     lockBoard = true;
     showScreen(won ? 'win' : 'lose');
   }
 
   function startGame() {
+    clearInterval(timerId);
     clearTimeout(preparationId);
+    clearInterval(preparationTimerId);
     matchedCount = 0;
     flippedCards = [];
     lockBoard = false;
@@ -132,7 +136,15 @@
     if (preparationSeconds > 0) {
       lockBoard = true;
       board.querySelectorAll('.card').forEach(card => card.classList.add('flipped'));
+      secondsLeft = preparationSeconds;
+      updateTimerText();
+      timerPill.classList.remove('warning');
+      preparationTimerId = setInterval(() => {
+        secondsLeft--;
+        updateTimerText();
+      }, 1000);
       preparationId = setTimeout(() => {
+        clearInterval(preparationTimerId);
         board.querySelectorAll('.card').forEach(card => card.classList.remove('flipped'));
         lockBoard = false;
         startTimer();

@@ -1,6 +1,6 @@
 (() => {
   const STORAGE_KEY = 'vonder-game-settings';
-  const defaults = { memoryEnabled:true, wordSearchEnabled:true, quizEnabled:true, inactivitySeconds:180, memorySeconds:30, memoryPreparationSeconds:5, wordSearchSeconds:60, quizQuestions:3 };
+  const defaults = { memoryEnabled:true, wordSearchEnabled:true, quizEnabled:true, inactivitySeconds:180, memorySeconds:30, memoryPreparationSeconds:5, wordSearchSeconds:60, quizQuestions:3, quizPassingPercentage:100 };
   const page = document.body.dataset.settingsPage || 'home';
   const get = () => { try { return { ...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEY)) }; } catch (_) { return { ...defaults }; } };
   const save = settings => {
@@ -19,12 +19,19 @@
   const range = (key, label, min, max, step, help = '') => `<div class="settings-control"><label>${label}<output class="settings-value" data-output="${key}"></output></label><input type="range" data-setting="${key}" min="${min}" max="${max}" step="${step}">${help ? `<p class="settings-help">${help}</p>` : ''}</div>`;
   const inactivity = () => range('inactivitySeconds', 'Tempo de inatividade', 30, 300, 30, 'Sem nenhum toque nesse tempo, o totem exibe o vídeo de atração. Vale para todos os jogos do totem.');
   function render() {
-    const body = page === 'home' ? `<p class="settings-subtitle">Selecione os jogos liberados para o público.</p><div class="settings-games">${gameCards.map(([key,title,description]) => `<div class="settings-game"><div class="settings-game-copy"><strong>${title}</strong><small>${description}</small></div><button type="button" class="settings-switch" data-switch="${key}" aria-label="Liberar ${title}"></button></div>`).join('')}</div><div class="settings-divider"></div>${inactivity()}` : `<p class="settings-subtitle">${subtitles[page]}</p>${page === 'memory' ? range('memorySeconds', 'Tempo de jogo', 15, 120, 5) + range('memoryPreparationSeconds', 'Tempo de preparação', 0, 20, 1, 'As cartas ficam viradas para cima nesse tempo, antes do jogo começar.') : ''}${page === 'wordsearch' ? range('wordSearchSeconds', 'Tempo de jogo', 30, 180, 10) : ''}${page === 'quiz' ? range('quizQuestions', 'Número de perguntas', 1, 10, 1) : ''}${inactivity()}`;
+    const body = page === 'home' ? `<p class="settings-subtitle">Selecione os jogos liberados para o público.</p><div class="settings-games">${gameCards.map(([key,title,description]) => `<div class="settings-game"><div class="settings-game-copy"><strong>${title}</strong><small>${description}</small></div><button type="button" class="settings-switch" data-switch="${key}" aria-label="Liberar ${title}"></button></div>`).join('')}</div><div class="settings-divider"></div>${inactivity()}` : `<p class="settings-subtitle">${subtitles[page]}</p>${page === 'memory' ? range('memorySeconds', 'Tempo de jogo', 15, 120, 5) + range('memoryPreparationSeconds', 'Tempo de preparação', 0, 20, 1, 'As cartas ficam viradas para cima nesse tempo, antes do jogo começar.') : ''}${page === 'wordsearch' ? range('wordSearchSeconds', 'Tempo de jogo', 30, 180, 10) : ''}${page === 'quiz' ? range('quizQuestions', 'Número de perguntas', 1, 10, 1) + range('quizPassingPercentage', 'Percentual mínimo para ganhar o prêmio', 0, 100, 5, 'Percentual de acertos necessário para receber o brinde.') + '<p class="settings-help settings-passing-count" id="quiz-passing-count"></p>' : ''}${inactivity()}`;
     modal.innerHTML = `<div class="settings-dialog" role="dialog" aria-modal="true"><h2 class="settings-title">CONFIGURAÇÕES</h2>${body}<div class="settings-actions"><button class="settings-cancel" type="button">CANCELAR</button><button class="settings-save" type="button">SALVAR</button></div></div>`;
-    modal.querySelectorAll('[data-switch]').forEach(button => button.classList.toggle('is-on', draft[button.dataset.switch])); modal.querySelectorAll('[data-setting]').forEach(input => { input.value = draft[input.dataset.setting]; paintRange(input); });
+    modal.querySelectorAll('[data-switch]').forEach(button => button.classList.toggle('is-on', draft[button.dataset.switch])); modal.querySelectorAll('[data-setting]').forEach(input => { input.value = draft[input.dataset.setting]; paintRange(input); }); updateQuizPassingCount();
   }
-  function format(key, value) { if (key === 'inactivitySeconds') return `${value}s (${value / 60} min)`; if (key === 'quizQuestions') return value; return `${value}s`; }
+  function format(key, value) { if (key === 'inactivitySeconds') return `${value}s (${value / 60} min)`; if (key === 'quizQuestions') return value; if (key === 'quizPassingPercentage') return `${value}%`; return `${value}s`; }
   function paintRange(input) { const pct = ((input.value - input.min) / (input.max - input.min)) * 100; input.style.setProperty('--slider-progress', `${pct}%`); modal.querySelector(`[data-output="${input.dataset.setting}"]`).textContent = format(input.dataset.setting, input.value); }
+  function updateQuizPassingCount() {
+    const count = modal.querySelector('#quiz-passing-count');
+    if (!count) return;
+    const total = draft.quizQuestions;
+    const required = Math.ceil(total * draft.quizPassingPercentage / 100);
+    count.textContent = `Você precisa acertar ${required} de ${total} ${total === 1 ? 'pergunta' : 'perguntas'}.`;
+  }
   function applyHomeVisibility() {
     const settings = get();
     document.querySelectorAll('.game-card').forEach(card => {
@@ -40,10 +47,12 @@
     const memoryRule = document.getElementById('memory-time-rule');
     const wordSearchRule = document.getElementById('word-search-time-rule');
     const quizRule = document.getElementById('quiz-count-rule');
+    const quizPrizeRule = document.getElementById('quiz-prize-rule');
     const homeQuizDescription = document.querySelector('.game-card[data-game="quizEnabled"] .game-desc');
     if (memoryRule) memoryRule.innerHTML = `<span class="rule-icon">⏱️</span> Você terá ${settings.memorySeconds} segundos para encontrar os pares.`;
     if (wordSearchRule) wordSearchRule.innerHTML = `<span class="rule-icon">⏱️</span> Você terá ${settings.wordSearchSeconds} segundos para caçar!`;
     if (quizRule) quizRule.innerHTML = `<span class="rule-icon">❓</span> Responda ${settings.quizQuestions} perguntas sobre ferramentas.`;
+    if (quizPrizeRule) quizPrizeRule.innerHTML = `<span class="rule-icon">🏆</span> Acerte ${settings.quizPassingPercentage}% para garantir o brinde!`;
     if (homeQuizDescription) homeQuizDescription.textContent = `Responda ${settings.quizQuestions} perguntas sobre a marca.`;
   }
   trigger.addEventListener('click', () => { draft = get(); render(); modal.classList.add('open'); });
@@ -67,6 +76,7 @@
     if (event.target.matches('[data-setting]')) {
       draft[event.target.dataset.setting] = Number(event.target.value);
       paintRange(event.target);
+      updateQuizPassingCount();
     }
   });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') modal.classList.remove('open'); });

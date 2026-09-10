@@ -67,6 +67,8 @@
   const progressText = document.getElementById('progress-text');
   const questionText = document.getElementById('question-text');
   const optionsEl = document.getElementById('options');
+  const winResultText = document.getElementById('win-result-text');
+  const loseResultText = document.getElementById('lose-result-text');
 
   let roundQuestions = [];
   let currentQuestion = 0;
@@ -140,12 +142,21 @@
       if (currentQuestion < roundQuestions.length) {
         renderQuestion();
       } else {
-        endGame(correctCount === roundQuestions.length);
+        const settings = window.VonderSettings?.get();
+        const passingPercentage = settings?.quizPassingPercentage ?? 100;
+        const scorePercentage = (correctCount / roundQuestions.length) * 100;
+        endGame(scorePercentage >= passingPercentage);
       }
     }, ANSWER_DELAY);
   }
 
   function endGame(won) {
+    const total = roundQuestions.length;
+    if (won) {
+      winResultText.textContent = `Você acertou ${correctCount} de ${total} perguntas! Parabéns!`;
+    } else {
+      loseResultText.textContent = `Ah, que pena, você acertou ${correctCount} de ${total} perguntas apenas. Mas não desista, tente novamente!`;
+    }
     showScreen(won ? 'win' : 'lose');
   }
 
